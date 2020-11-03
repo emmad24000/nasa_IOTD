@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NASA POTD</title>
+</head>
+<input type="date" id="date" value="2000-12-12">
+<button onclick="fx()">GET PIC OF THE DAY</button>
+<br>
+<h1 id="title"></h1>
+<img id="potd">
+<p id="desc"></p>
+
+<script>
+    function fx(){
+        var title = document.getElementById("title");
+        var img = document.getElementById("potd");
+        var desc = document.getElementById("desc");
+        var good = false;
+        var date = document.getElementById("date").value;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function (){
+            if(this.readyState === 4 && this.status === 200){
+                good = true;
+                var resp = this.responseText;
+                var obj = JSON.parse(resp);
+                console.log(obj);
+                img.style.display = "block";
+
+                img.src = obj.url;
+                title.innerHTML = obj.title;
+                desc.innerHTML = obj.explanation;
+
+            }else{
+                title.innerHTML = "Bad Request :(";
+                img.style.display = "none";
+                desc.innerHTML = " ";
+            }
+        };
+        xhttp.open("GET","https://api.nasa.gov/planetary/apod?api_key=H5uRXbxqGFaCeJvDihhfLt6TAorwiv7GvpilBJda&date=" + date,true);
+        xhttp.send();
+
+
+
+    }
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
